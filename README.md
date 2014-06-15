@@ -20,6 +20,8 @@ mysql> FLUSH PRIVILEGES;
 mysql> QUIT
 ```
 
+`mysql -u ans -p123123 ansible_inv < inv.sql`
+
 * Provide database information
 
 ```

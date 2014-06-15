@@ -9,6 +9,7 @@ except ImportError:
 	import simplejson as json
 
 server = 'localhost'
+server_port = 3306
 db_name = 'ansible_inv'
 username = 'ans'
 password = '123123'
@@ -85,7 +86,10 @@ def addvar(conn, name, type, key, value):
 # delete host/group vars from DB
 def delvar(conn, name, type, key):
 	cur = conn.cursor()
-	cur.execute("DELETE FROM vars WHERE `name`=%s AND `type`=%s AND `key`=%s", (name, type, key))
+	if key is None:
+		cur.execute("DELETE FROM vars WHERE `name`=%s AND `type`=%s", (name, type))
+	else:
+		cur.execute("DELETE FROM vars WHERE `name`=%s AND `type`=%s AND `key`=%s", (name, type, key))
 	cur.close()
 	
 	
@@ -115,7 +119,7 @@ def printhelp():
 	
 # main execution	
 if __name__ == '__main__':
-	con = MySQLdb.connect(host=server, user=username, passwd=password, db=db_name)
+	con = MySQLdb.connect(host=server, port=server_port, user=username, passwd=password, db=db_name)
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "--addhost":
 			if len(sys.argv) != 4:
@@ -141,6 +145,7 @@ if __name__ == '__main__':
 			if len(sys.argv) != 4:
 				print "Usage: " + sys.argv[0] + " --delhost [group] [host]"
 			else:
+				delvar(con, sys.argv[3], 'h', None)
 				delete(con, sys.argv[2], sys.argv[3], 'h')
 		elif sys.argv[1] == "--delchild":
 			if len(sys.argv) != 4:
