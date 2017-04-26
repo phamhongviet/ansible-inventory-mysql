@@ -13,8 +13,8 @@ server_port = 3306
 db_name = 'ansible_inv'
 username = 'ans'
 password = '123123'
-		
-		
+
+
 # create a JSON list of host to work with Ansible
 def grouplist(conn):
 	inventory ={}
@@ -24,7 +24,7 @@ def grouplist(conn):
 		group = row[0]
 		if group is None:
 			group = 'ungrouped'
-		
+
 		# Add group with empty host list to inventory{} if necessary
 		if not group in inventory:
 			inventory[group] = {
@@ -41,7 +41,7 @@ def grouplist(conn):
 		group = row[0]
 		if group is None:
 			group = 'ungrouped'
-		
+
 		# Add group with empty host list to inventory{} if necessary
 		if not group in inventory:
 			inventory[group] = {
@@ -53,7 +53,7 @@ def grouplist(conn):
 	cur.close()
 	print json.dumps(inventory, indent=4)
 
-	
+
 # add a host or child to DB, safely ignore if host or child exists
 def add(conn, group, name, type):
 	cur = conn.cursor()
@@ -63,14 +63,14 @@ def add(conn, group, name, type):
 		cur.execute("INSERT INTO groups(`group`, `name`, `type`) values (%s, %s, %s)", (group, name, type))
 	cur.close()
 
-	
+
 # delete host(s) or child(ren) from DB
 def delete(conn, group, name, type):
 	cur = conn.cursor()
 	cur.execute("DELETE FROM groups WHERE `group`=%s AND `name`=%s AND `type`=%s", (group, name, type))
 	cur.close()
 
-	
+
 # add host/group vars to DB, safely ignore if exists
 def addvar(conn, name, type, key, value):
 	cur = conn.cursor()
@@ -81,7 +81,7 @@ def addvar(conn, name, type, key, value):
 	else:
 		cur.execute("UPDATE vars SET `value`=%s WHERE `name`=%s AND `type`=%s AND `key`=%s", (value, name, type, key))
 	cur.close()
-	
+
 
 # delete host/group vars from DB
 def delvar(conn, name, type, key):
@@ -91,8 +91,8 @@ def delvar(conn, name, type, key):
 	else:
 		cur.execute("DELETE FROM vars WHERE `name`=%s AND `type`=%s AND `key`=%s", (name, type, key))
 	cur.close()
-	
-	
+
+
 # return host info
 def hostinfo(conn, name):
 	cur = conn.cursor()
@@ -115,9 +115,9 @@ def printhelp():
 	print "Usage: " + sys.argv[0] + " --delgroupvar [group] [key]"
 	print "Usage: " + sys.argv[0] + " --delhostvar [host] [key]"
 	print "Usage: " + sys.argv[0] + " --delchild [group] [child]"
-	
-	
-# main execution	
+
+
+# main execution
 if __name__ == '__main__':
 	con = MySQLdb.connect(host=server, port=server_port, user=username, passwd=password, db=db_name)
 	if len(sys.argv) > 1:
