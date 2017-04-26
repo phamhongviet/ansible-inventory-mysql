@@ -1,8 +1,8 @@
 #!/usr/bin/env python2
 # Manage Ansible inventory
 
-import MySQLdb
 import sys
+import MySQLdb
 try:
 	import json
 except ImportError:
