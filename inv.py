@@ -73,6 +73,7 @@ def add(conn, group, name, type):
             (group,
              name,
              type))
+        conn.commit()
     cur.close()
 
 
@@ -84,6 +85,7 @@ def delete(conn, group, name, type):
         (group,
          name,
          type))
+    conn.commit()
     cur.close()
 
 
@@ -103,6 +105,7 @@ def addvar(conn, name, type, key, value):
              type,
              key,
              value))
+        conn.commit()
     else:
         cur.execute(
             "UPDATE vars SET `value`=%s WHERE `name`=%s AND `type`=%s AND `key`=%s",
@@ -110,6 +113,7 @@ def addvar(conn, name, type, key, value):
              name,
              type,
              key))
+        conn.commit()
     cur.close()
 
 
@@ -119,12 +123,14 @@ def delvar(conn, name, type, key):
     if key is None:
         cur.execute(
             "DELETE FROM vars WHERE `name`=%s AND `type`=%s", (name, type))
+        conn.commit()
     else:
         cur.execute(
             "DELETE FROM vars WHERE `name`=%s AND `type`=%s AND `key`=%s",
             (name,
              type,
              key))
+        conn.commit()
     cur.close()
 
 
