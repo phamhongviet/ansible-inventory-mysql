@@ -16,8 +16,7 @@ password = '123123'
 
 
 def group_list(conn):
-
-"""Create a JSON list of hosts to work with Ansible"""
+    """Create a JSON list of hosts to work with Ansible"""
     inventory = {}
     cur = conn.cursor()
     cur.execute(
@@ -59,8 +58,8 @@ def group_list(conn):
     print json.dumps(inventory, indent=4)
 
 
-# add a host or child to DB, safely ignore if host or child exists
 def add(conn, group, name, type):
+    """Add a host or child to inventory, safely ignore if host or child exists"""
     cur = conn.cursor()
     cur.execute(
         "SELECT COUNT(*) FROM groups WHERE `group`=%s AND `name`=%s AND `type`=%s",
@@ -78,8 +77,8 @@ def add(conn, group, name, type):
     cur.close()
 
 
-# delete host(s) or child(ren) from DB
 def delete(conn, group, name, type):
+    """Delete host(s) or child(ren) from inventory"""
     cur = conn.cursor()
     cur.execute(
         "DELETE FROM groups WHERE `group`=%s AND `name`=%s AND `type`=%s",
@@ -90,8 +89,8 @@ def delete(conn, group, name, type):
     cur.close()
 
 
-# add host/group vars to DB, safely ignore if exists
 def addvar(conn, name, type, key, value):
+    """Add host/group vars to inventory, safely ignore if exists"""
     cur = conn.cursor()
     cur.execute(
         "SELECT COUNT(*) FROM vars WHERE `name`=%s AND `type`=%s AND `key`=%s",
@@ -118,8 +117,8 @@ def addvar(conn, name, type, key, value):
     cur.close()
 
 
-# delete host/group vars from DB
 def delvar(conn, name, type, key):
+    """Delete host or group vars from inventory"""
     cur = conn.cursor()
     if key is None:
         cur.execute(
@@ -135,8 +134,8 @@ def delvar(conn, name, type, key):
     cur.close()
 
 
-# return host info
 def hostinfo(conn, name):
+    """Return host info"""
     cur = conn.cursor()
     cur.execute(
         "SELECT `key`, `value` FROM vars WHERE `name`=%s AND `type`=%s", (name, 'h'))
@@ -148,8 +147,7 @@ def hostinfo(conn, name):
 
 
 def print_help():
-
-"""Print a short help"""
+    """Print a short help"""
     print """Usage:
     {0} --list
     {0} --host [host]
