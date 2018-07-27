@@ -95,7 +95,7 @@ class AnsibleInventoryMySQL:
         self.connection.commit()
         cur.close()
 
-    def addvar(self, name, type, key, value):
+    def add_var(self, name, type, key, value):
         """Add host/group vars to inventory, safely ignore if exists"""
         cur = self.connection.cursor()
         cur.execute(
@@ -122,7 +122,7 @@ class AnsibleInventoryMySQL:
             self.connection.commit()
         cur.close()
 
-    def delvar(self, name, type, key):
+    def del_var(self, name, type, key):
         """Delete host or group vars from inventory"""
         cur = self.connection.cursor()
         if key is None:
@@ -138,7 +138,7 @@ class AnsibleInventoryMySQL:
             self.connection.commit()
         cur.close()
 
-    def hostinfo(self, name):
+    def host_info(self, name):
         """Return host info"""
         cur = self.connection.cursor()
         cur.execute(
@@ -202,17 +202,17 @@ def main():
             if len(sys.argv) != 5:
                 print "Usage: " + sys.argv[0] + " --addhostvar [host] [key] [value]"
             else:
-                inv.addvar(sys.argv[2], 'h', sys.argv[3], sys.argv[4])
+                inv.add_var(sys.argv[2], 'h', sys.argv[3], sys.argv[4])
         elif sys.argv[1] == "--addgroupvar":
             if len(sys.argv) != 5:
                 print "Usage: " + sys.argv[0] + " --addgroupvar [group] [key] [value]"
             else:
-                inv.addvar(sys.argv[2], 'g', sys.argv[3], sys.argv[4])
+                inv.add_var(sys.argv[2], 'g', sys.argv[3], sys.argv[4])
         elif sys.argv[1] == "--delhost":
             if len(sys.argv) != 4:
                 print "Usage: " + sys.argv[0] + " --delhost [group] [host]"
             else:
-                inv.delvar(sys.argv[3], 'h', None)
+                inv.del_var(sys.argv[3], 'h', None)
                 inv.delete(sys.argv[2], sys.argv[3], 'h')
         elif sys.argv[1] == "--delchild":
             if len(sys.argv) != 4:
@@ -223,12 +223,12 @@ def main():
             if len(sys.argv) != 4:
                 print "Usage: " + sys.argv[0] + " --delhostvar [host] [key]"
             else:
-                inv.delvar(sys.argv[2], 'h', sys.argv[3])
+                inv.del_var(sys.argv[2], 'h', sys.argv[3])
         elif sys.argv[1] == "--delgroupvar":
             if len(sys.argv) != 4:
                 print "Usage: " + sys.argv[0] + " --delgroupvar [group] [key]"
             else:
-                inv.delvar(sys.argv[2], 'g', sys.argv[3])
+                inv.del_var(sys.argv[2], 'g', sys.argv[3])
         elif sys.argv[1] == "--list":
             if len(sys.argv) != 2:
                 print "Usage: " + sys.argv[0] + " --host [host]"
@@ -238,7 +238,7 @@ def main():
             if len(sys.argv) != 3:
                 print "Usage: " + sys.argv[0] + " --host [host]"
             else:
-                inv.hostinfo(sys.argv[2])
+                inv.host_info(sys.argv[2])
         else:
             inv.print_help()
     else:
