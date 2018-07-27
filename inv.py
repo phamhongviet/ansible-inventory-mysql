@@ -2,6 +2,7 @@
 """ansible-inventory-mysql: Manage Ansible inventory using MySQL compabitible database"""
 
 import sys
+import ConfigParser
 import MySQLdb
 try:
     import json
@@ -165,7 +166,26 @@ class AnsibleInventoryMySQL:
 
 
 def main():
-    inv = AnsibleInventoryMySQL()
+    default_config = {
+        "server": "localhost",
+        "port": 3306,
+        "name": "ansible_inv",
+        "user": "ans",
+        "password": "123123"
+    }
+    config = ConfigParser.RawConfigParser(default_config)
+    config.read("config.ini")
+
+    try:
+        db_server = config.get("db", "server")
+        db_port = config.get("db", "port")
+        db_name = config.get("db", "name")
+        db_user = config.get("db", "user")
+        db_password = config.get("db", "password")
+        inv = AnsibleInventoryMySQL(db_server, db_port, db_name, db_user, db_password)
+    except ConfigParser.NoSectionError:
+        inv = AnsibleInventoryMySQL()
+
     inv.connect()
     if len(sys.argv) > 1:
         if sys.argv[1] == "--addhost":
