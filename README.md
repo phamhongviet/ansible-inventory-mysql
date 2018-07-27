@@ -11,7 +11,9 @@ Simple Python script to manage Ansible inventory in mySQL
 
 ## Setup
 
-* Create a mySQL database and user, `ansible_inv` and `ans` for example.
+### Database
+
+Create a mySQL database and user, `ansible_inv` and `ans` for example.
 
 ```
 CREATE DATABASE ansible_inv;
@@ -24,8 +26,9 @@ QUIT;
 mysql -u ans -p123123 ansible_inv < inv.sql
 ```
 
+### Configuration
 
-* Provide database information in config.ini file, for example:
+Provide database information in config file, for example:
 
 ```
 [db]
@@ -35,6 +38,16 @@ name = ansible_inv
 user = ans
 password = 123123
 ```
+
+The config file can be read from these location, whichever come first:
+* Environment variable ANSIBLE_INV_CONFIG. Example:
+
+```
+ANSIBLE_INV_CONFIG=path/to/my-config.ini ansible -i path/to/inv.py -m ping all
+```
+
+* config.ini file in the same directory as inv.py file      
+* config.ini file in the current directory      
 
 
 ## Commands
