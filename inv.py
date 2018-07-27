@@ -145,10 +145,10 @@ def hostinfo(conn, name):
     cur.close()
     print json.dumps(infos, indent=4)
 
-# print help
-
 
 def printhelp():
+
+"""Print a short help"""
     print """Usage:
     {0} --list
     {0} --host [host]
