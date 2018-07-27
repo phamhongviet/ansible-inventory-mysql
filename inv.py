@@ -6,7 +6,7 @@ try:
     import configparser
 except ImportError:
     import ConfigParser as configparser
-import MySQLdb
+import pymysql
 import os
 try:
     import json
@@ -25,7 +25,7 @@ class AnsibleInventoryMySQL:
         self.db_password = db_password
 
     def connect(self):
-        self.connection = MySQLdb.connect(host=self.db_server, port=self.db_port,
+        self.connection = pymysql.connect(host=self.db_server, port=self.db_port,
                                           user=self.db_user, passwd=self.db_password, db=self.db_name)
 
     def group_list(self):

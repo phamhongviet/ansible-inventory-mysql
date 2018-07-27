@@ -4,8 +4,8 @@ ansible-inventory-mysql
 Simple Python script to manage Ansible inventory in mySQL
 
 # Requirement
-* Python 2.7
-* MySQLdb
+* Python 2.7 or Python >= 3.4
+* PyMySQL
 
 # How to use
 
