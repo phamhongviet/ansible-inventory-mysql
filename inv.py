@@ -15,8 +15,9 @@ username = 'ans'
 password = '123123'
 
 
-# create a JSON list of host to work with Ansible
-def grouplist(conn):
+def group_list(conn):
+
+"""Create a JSON list of hosts to work with Ansible"""
     inventory = {}
     cur = conn.cursor()
     cur.execute(
@@ -213,7 +214,7 @@ if __name__ == '__main__':
             if len(sys.argv) != 2:
                 print "Usage: " + sys.argv[0] + " --host [host]"
             else:
-                grouplist(con)
+                group_list(con)
         elif sys.argv[1] == "--host":
             if len(sys.argv) != 3:
                 print "Usage: " + sys.argv[0] + " --host [host]"
