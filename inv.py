@@ -149,16 +149,18 @@ def hostinfo(conn, name):
 
 
 def printhelp():
-    print "Usage: " + sys.argv[0] + " --list"
-    print "Usage: " + sys.argv[0] + " --host [host]"
-    print "Usage: " + sys.argv[0] + " --addhost [group] [host]"
-    print "Usage: " + sys.argv[0] + " --addhostvar [host] [key] [value]"
-    print "Usage: " + sys.argv[0] + " --addgroupvar [group] [key] [value]"
-    print "Usage: " + sys.argv[0] + " --addchild [group] [child]"
-    print "Usage: " + sys.argv[0] + " --delhost [group] [host]"
-    print "Usage: " + sys.argv[0] + " --delgroupvar [group] [key]"
-    print "Usage: " + sys.argv[0] + " --delhostvar [host] [key]"
-    print "Usage: " + sys.argv[0] + " --delchild [group] [child]"
+    print """Usage:
+    {0} --list
+    {0} --host [host]
+    {0} --addhost [group] [host]
+    {0} --addhostvar [host] [key] [value]
+    {0} --addgroupvar [group] [key] [value]
+    {0} --addchild [group] [child]
+    {0} --delhost [group] [host]
+    {0} --delgroupvar [group] [key]
+    {0} --delhostvar [host] [key]
+    {0} --delchild [group] [child]
+    """.format(sys.argv[0])
 
 
 # main execution
