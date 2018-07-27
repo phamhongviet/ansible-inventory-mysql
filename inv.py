@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-# Manage Ansible inventory
+"""ansible-inventory-mysql: Manage Ansible inventory using MySQL compabitible database"""
 
 import sys
 import MySQLdb
