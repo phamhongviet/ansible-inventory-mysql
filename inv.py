@@ -4,6 +4,7 @@
 import sys
 import ConfigParser
 import MySQLdb
+import os
 try:
     import json
 except ImportError:
@@ -166,6 +167,22 @@ class AnsibleInventoryMySQL:
 
 
 def main():
+
+    config_file_list = list()
+    try:
+        config_file_list.append(os.environ["ANSIBLE_INV_CONFIG"])
+    except KeyError:
+        pass
+    config_file_list.append(
+        "{}/{}".format(os.path.dirname(sys.argv[0]), "config.ini"))
+    config_file_list.append("config.ini")
+
+    config_file = config_file_list[-1]
+    for potential_config_file in config_file_list:
+        if os.path.isfile(potential_config_file):
+            config_file = potential_config_file
+            break
+
     default_config = {
         "server": "localhost",
         "port": 3306,
@@ -174,7 +191,7 @@ def main():
         "password": "123123"
     }
     config = ConfigParser.RawConfigParser(default_config)
-    config.read("config.ini")
+    config.read(config_file)
 
     try:
         db_server = config.get("db", "server")
@@ -244,6 +261,7 @@ def main():
     else:
         inv.print_help()
     inv.connection.close()
+
 
 if __name__ == "__main__":
     main()
