@@ -146,7 +146,7 @@ def hostinfo(conn, name):
     print json.dumps(infos, indent=4)
 
 
-def printhelp():
+def print_help():
 
 """Print a short help"""
     print """Usage:
@@ -220,7 +220,7 @@ if __name__ == '__main__':
             else:
                 hostinfo(con, sys.argv[2])
         else:
-            printhelp()
+            print_help()
     else:
-        printhelp()
+        print_help()
     con.close()
