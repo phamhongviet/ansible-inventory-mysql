@@ -97,3 +97,9 @@ We can create the same inventory with these commands:
 ./inv.py --addhost db db0
 ./inv.py --addhostvar db0 ansible_host 192.168.2.15
 ```
+
+You can try to ping the hosts with:
+
+```
+ansible -i inv.py -m ping all
+```
