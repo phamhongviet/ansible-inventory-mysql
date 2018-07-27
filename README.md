@@ -116,3 +116,6 @@ You can try to ping the hosts with:
 ```
 ansible -i inv.py -m ping all
 ```
+
+# Reference
+[Working With Dynamic Inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_dynamic_inventory.html)
