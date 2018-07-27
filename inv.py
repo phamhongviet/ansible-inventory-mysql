@@ -1,8 +1,11 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """ansible-inventory-mysql: Manage Ansible inventory using MySQL compabitible database"""
 
 import sys
-import ConfigParser
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 import MySQLdb
 import os
 try:
@@ -65,7 +68,7 @@ class AnsibleInventoryMySQL:
                 }
             inventory[group]['vars'][row[1]] = row[2]
         cur.close()
-        print json.dumps(inventory, indent=4)
+        print(json.dumps(inventory, indent=4))
 
     def add(self, group, name, type):
         """Add a host or child to inventory, safely ignore if host or child exists"""
@@ -148,11 +151,11 @@ class AnsibleInventoryMySQL:
         for row in cur.fetchall():
             infos[row[0]] = row[1]
         cur.close()
-        print json.dumps(infos, indent=4)
+        print(json.dumps(infos, indent=4))
 
     def print_help(self):
         """Print a short help"""
-        print """Usage:
+        print("""Usage:
         {0} --list
         {0} --host [host]
         {0} --addhost [group] [host]
@@ -163,7 +166,7 @@ class AnsibleInventoryMySQL:
         {0} --delgroupvar [group] [key]
         {0} --delhostvar [host] [key]
         {0} --delchild [group] [child]
-        """.format(sys.argv[0])
+        """.format(sys.argv[0]))
 
 
 def main():
@@ -190,7 +193,7 @@ def main():
         "user": "ans",
         "password": "123123"
     }
-    config = ConfigParser.RawConfigParser(default_config)
+    config = configparser.RawConfigParser(default_config)
     config.read(config_file)
 
     try:
@@ -200,60 +203,60 @@ def main():
         db_user = config.get("db", "user")
         db_password = config.get("db", "password")
         inv = AnsibleInventoryMySQL(db_server, db_port, db_name, db_user, db_password)
-    except ConfigParser.NoSectionError:
+    except configparser.NoSectionError:
         inv = AnsibleInventoryMySQL()
 
     inv.connect()
     if len(sys.argv) > 1:
         if sys.argv[1] == "--addhost":
             if len(sys.argv) != 4:
-                print "Usage: " + sys.argv[0] + " --addhost [group] [host]"
+                print("Usage: " + sys.argv[0] + " --addhost [group] [host]")
             else:
                 inv.add(sys.argv[2], sys.argv[3], 'h')
         elif sys.argv[1] == "--addchild":
             if len(sys.argv) != 4:
-                print "Usage: " + sys.argv[0] + " --addchild [group] [child]"
+                print("Usage: " + sys.argv[0] + " --addchild [group] [child]")
             else:
                 inv.add(sys.argv[2], sys.argv[3], 'c')
         elif sys.argv[1] == "--addhostvar":
             if len(sys.argv) != 5:
-                print "Usage: " + sys.argv[0] + " --addhostvar [host] [key] [value]"
+                print("Usage: " + sys.argv[0] + " --addhostvar [host] [key] [value]")
             else:
                 inv.add_var(sys.argv[2], 'h', sys.argv[3], sys.argv[4])
         elif sys.argv[1] == "--addgroupvar":
             if len(sys.argv) != 5:
-                print "Usage: " + sys.argv[0] + " --addgroupvar [group] [key] [value]"
+                print("Usage: " + sys.argv[0] + " --addgroupvar [group] [key] [value]")
             else:
                 inv.add_var(sys.argv[2], 'g', sys.argv[3], sys.argv[4])
         elif sys.argv[1] == "--delhost":
             if len(sys.argv) != 4:
-                print "Usage: " + sys.argv[0] + " --delhost [group] [host]"
+                print("Usage: " + sys.argv[0] + " --delhost [group] [host]")
             else:
                 inv.del_var(sys.argv[3], 'h', None)
                 inv.delete(sys.argv[2], sys.argv[3], 'h')
         elif sys.argv[1] == "--delchild":
             if len(sys.argv) != 4:
-                print "Usage: " + sys.argv[0] + " --delchild [group] [child]"
+                print("Usage: " + sys.argv[0] + " --delchild [group] [child]")
             else:
                 inv.delete(sys.argv[2], sys.argv[3], 'c')
         elif sys.argv[1] == "--delhostvar":
             if len(sys.argv) != 4:
-                print "Usage: " + sys.argv[0] + " --delhostvar [host] [key]"
+                print("Usage: " + sys.argv[0] + " --delhostvar [host] [key]")
             else:
                 inv.del_var(sys.argv[2], 'h', sys.argv[3])
         elif sys.argv[1] == "--delgroupvar":
             if len(sys.argv) != 4:
-                print "Usage: " + sys.argv[0] + " --delgroupvar [group] [key]"
+                print("Usage: " + sys.argv[0] + " --delgroupvar [group] [key]")
             else:
                 inv.del_var(sys.argv[2], 'g', sys.argv[3])
         elif sys.argv[1] == "--list":
             if len(sys.argv) != 2:
-                print "Usage: " + sys.argv[0] + " --host [host]"
+                print("Usage: " + sys.argv[0] + " --host [host]")
             else:
                 inv.group_list()
         elif sys.argv[1] == "--host":
             if len(sys.argv) != 3:
-                print "Usage: " + sys.argv[0] + " --host [host]"
+                print("Usage: " + sys.argv[0] + " --host [host]")
             else:
                 inv.host_info(sys.argv[2])
         else:
