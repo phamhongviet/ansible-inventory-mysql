@@ -58,3 +58,42 @@ password = 123123
 `--delgroupvar [group] [key]`: delete a group variable
 
 `--delchild [group] [child]`: delete a group child
+
+## Example
+
+Consider the following static inventory file:
+
+```
+[dc0:children]
+web
+db
+
+[web]
+w0 ansible_host=192.168.1.10
+w1 ansible_host=192.168.1.11 ansible_user=ken
+
+[web:vars]
+ntp_servers=ntp0.example.com
+
+[db]
+db0 ansible_host=192.168.2.15
+```
+
+We can create the same inventory with these commands:
+
+```
+./inv.py --addchild dc0 web
+./inv.py --addchild dc0 db
+
+./inv.py --addhost web w0
+./inv.py --addhostvar w0 ansible_host 192.168.1.10
+
+./inv.py --addhost web w1
+./inv.py --addhostvar w1 ansible_host 192.168.1.11
+./inv.py --addhostvar w1 ansible_user ken
+
+./inv.py --addgroupvar web ntp_servers ntp0.example.com
+
+./inv.py --addhost db db0
+./inv.py --addhostvar db0 ansible_host 192.168.2.15
+```
