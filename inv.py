@@ -198,7 +198,7 @@ def main():
 
     try:
         db_server = config.get("db", "server")
-        db_port = config.get("db", "port")
+        db_port = config.getint("db", "port")
         db_name = config.get("db", "name")
         db_user = config.get("db", "user")
         db_password = config.get("db", "password")
