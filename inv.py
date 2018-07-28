@@ -169,8 +169,8 @@ class AnsibleInventoryMySQL:
         """.format(sys.argv[0]))
 
 
-def main():
-
+def parse_config():
+    """Parse configuration from config file"""
     config_file_list = list()
     try:
         config_file_list.append(os.environ["ANSIBLE_INV_CONFIG"])
@@ -196,6 +196,12 @@ def main():
     config = configparser.RawConfigParser(default_config)
     config.read(config_file)
 
+    return config
+
+
+def main():
+
+    config = parse_config()
     try:
         db_server = config.get("db", "server")
         db_port = config.getint("db", "port")
