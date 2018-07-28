@@ -153,20 +153,49 @@ class AnsibleInventoryMySQL:
         cur.close()
         print(json.dumps(infos, indent=4))
 
+    def print_help_list(self):
+        print("{} --list".format(sys.argv[0]))
+
+    def print_help_host(self):
+        print("{} --host [host]".format(sys.argv[0]))
+
+    def print_help_addhost(self):
+        print("{} --addhost [group] [host]".format(sys.argv[0]))
+
+    def print_help_addhostvar(self):
+        print("{} --addhostvar [host] [key] [value]".format(sys.argv[0]))
+
+    def print_help_addgroupvar(self):
+        print("{} --addgroupvar [group] [key] [value]".format(sys.argv[0]))
+
+    def print_help_addchild(self):
+        print("{} --addchild [group] [child]".format(sys.argv[0]))
+
+    def print_help_delhost(self):
+        print("{} --delhost [group] [host]".format(sys.argv[0]))
+
+    def print_help_delgroupvar(self):
+        print("{} --delgroupvar [group] [key]".format(sys.argv[0]))
+
+    def print_help_delhostvar(self):
+        print("{} --delhostvar [host] [key]".format(sys.argv[0]))
+
+    def print_help_delchild(self):
+        print("{} --delchild [group] [child]".format(sys.argv[0]))
+
     def print_help(self):
         """Print a short help"""
-        print("""Usage:
-        {0} --list
-        {0} --host [host]
-        {0} --addhost [group] [host]
-        {0} --addhostvar [host] [key] [value]
-        {0} --addgroupvar [group] [key] [value]
-        {0} --addchild [group] [child]
-        {0} --delhost [group] [host]
-        {0} --delgroupvar [group] [key]
-        {0} --delhostvar [host] [key]
-        {0} --delchild [group] [child]
-        """.format(sys.argv[0]))
+        print("Usage:")
+        self.print_help_list()
+        self.print_help_host()
+        self.print_help_addhost()
+        self.print_help_addhostvar()
+        self.print_help_addgroupvar()
+        self.print_help_addchild()
+        self.print_help_delhost()
+        self.print_help_delgroupvar()
+        self.print_help_delhostvar()
+        self.print_help_delchild()
 
 
 def parse_config():
@@ -216,53 +245,53 @@ def main():
     if len(sys.argv) > 1:
         if sys.argv[1] == "--addhost":
             if len(sys.argv) != 4:
-                print("Usage: " + sys.argv[0] + " --addhost [group] [host]")
+                inv.print_help_addhost()
             else:
                 inv.add(sys.argv[2], sys.argv[3], 'h')
         elif sys.argv[1] == "--addchild":
             if len(sys.argv) != 4:
-                print("Usage: " + sys.argv[0] + " --addchild [group] [child]")
+                inv.print_help_addchild()
             else:
                 inv.add(sys.argv[2], sys.argv[3], 'c')
         elif sys.argv[1] == "--addhostvar":
             if len(sys.argv) != 5:
-                print("Usage: " + sys.argv[0] + " --addhostvar [host] [key] [value]")
+                inv.print_help_addhostvar()
             else:
                 inv.add_var(sys.argv[2], 'h', sys.argv[3], sys.argv[4])
         elif sys.argv[1] == "--addgroupvar":
             if len(sys.argv) != 5:
-                print("Usage: " + sys.argv[0] + " --addgroupvar [group] [key] [value]")
+                inv.print_help_addgroupvar()
             else:
                 inv.add_var(sys.argv[2], 'g', sys.argv[3], sys.argv[4])
         elif sys.argv[1] == "--delhost":
             if len(sys.argv) != 4:
-                print("Usage: " + sys.argv[0] + " --delhost [group] [host]")
+                inv.print_help_delhost()
             else:
                 inv.del_var(sys.argv[3], 'h', None)
                 inv.delete(sys.argv[2], sys.argv[3], 'h')
         elif sys.argv[1] == "--delchild":
             if len(sys.argv) != 4:
-                print("Usage: " + sys.argv[0] + " --delchild [group] [child]")
+                inv.print_help_delchild()
             else:
                 inv.delete(sys.argv[2], sys.argv[3], 'c')
         elif sys.argv[1] == "--delhostvar":
             if len(sys.argv) != 4:
-                print("Usage: " + sys.argv[0] + " --delhostvar [host] [key]")
+                inv.print_help_delhostvar()
             else:
                 inv.del_var(sys.argv[2], 'h', sys.argv[3])
         elif sys.argv[1] == "--delgroupvar":
             if len(sys.argv) != 4:
-                print("Usage: " + sys.argv[0] + " --delgroupvar [group] [key]")
+                inv.print_help_delgroupvar()
             else:
                 inv.del_var(sys.argv[2], 'g', sys.argv[3])
         elif sys.argv[1] == "--list":
             if len(sys.argv) != 2:
-                print("Usage: " + sys.argv[0] + " --host [host]")
+                inv.print_help_list()
             else:
                 inv.group_list()
         elif sys.argv[1] == "--host":
             if len(sys.argv) != 3:
-                print("Usage: " + sys.argv[0] + " --host [host]")
+                inv.print_help_host()
             else:
                 inv.host_info(sys.argv[2])
         else:
