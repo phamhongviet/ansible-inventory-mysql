@@ -33,7 +33,7 @@ class AnsibleInventoryMySQL:
         inventory = {}
         cur = self.connection.cursor()
         cur.execute(
-            "SELECT `group`, `type`, `name` FROM groups ORDER BY `group`, `type`, `name`")
+            "SELECT `group`, `type`, `name` FROM `groups` ORDER BY `group`, `type`, `name`")
         for row in cur.fetchall():
             group = row[0]
             if group is None:
@@ -51,7 +51,7 @@ class AnsibleInventoryMySQL:
             elif row[1] == 'c':
                 inventory[group]['children'].append(row[2])
         cur.execute(
-            "SELECT `name`, `key`, `value` FROM vars WHERE `type`=%s ORDER BY `name`",
+            "SELECT `name`, `key`, `value` FROM `vars` WHERE `type`=%s ORDER BY `name`",
             ('g',
              ))
         for row in cur.fetchall():
@@ -74,14 +74,14 @@ class AnsibleInventoryMySQL:
         """Add a host or child to inventory, safely ignore if host or child exists"""
         cur = self.connection.cursor()
         cur.execute(
-            "SELECT COUNT(*) FROM groups WHERE `group`=%s AND `name`=%s AND `type`=%s",
+            "SELECT COUNT(*) FROM `groups` WHERE `group`=%s AND `name`=%s AND `type`=%s",
             (group,
              name,
              type))
         row = cur.fetchone()
         if row[0] == 0:
             cur.execute(
-                "INSERT INTO groups(`group`, `name`, `type`) values (%s, %s, %s)",
+                "INSERT INTO `groups` (`group`, `name`, `type`) VALUES (%s, %s, %s)",
                 (group,
                  name,
                  type))
@@ -92,7 +92,7 @@ class AnsibleInventoryMySQL:
         """Delete host(s) or child(ren) from inventory"""
         cur = self.connection.cursor()
         cur.execute(
-            "DELETE FROM groups WHERE `group`=%s AND `name`=%s AND `type`=%s",
+            "DELETE FROM `groups` WHERE `group`=%s AND `name`=%s AND `type`=%s",
             (group,
              name,
              type))
@@ -103,14 +103,14 @@ class AnsibleInventoryMySQL:
         """Add host/group vars to inventory, safely ignore if exists"""
         cur = self.connection.cursor()
         cur.execute(
-            "SELECT COUNT(*) FROM vars WHERE `name`=%s AND `type`=%s AND `key`=%s",
+            "SELECT COUNT(*) FROM `vars` WHERE `name`=%s AND `type`=%s AND `key`=%s",
             (name,
              type,
              key))
         row = cur.fetchone()
         if row[0] == 0:
             cur.execute(
-                "INSERT INTO vars(`name`, `type`, `key`, `value`) values (%s, %s, %s, %s)",
+                "INSERT INTO `vars` (`name`, `type`, `key`, `value`) values (%s, %s, %s, %s)",
                 (name,
                  type,
                  key,
@@ -146,7 +146,7 @@ class AnsibleInventoryMySQL:
         """Return host info"""
         cur = self.connection.cursor()
         cur.execute(
-            "SELECT `key`, `value` FROM vars WHERE `name`=%s AND `type`=%s", (name, 'h'))
+            "SELECT `key`, `value` FROM `vars` WHERE `name`=%s AND `type`=%s", (name, 'h'))
         infos = {}
         for row in cur.fetchall():
             infos[row[0]] = row[1]
